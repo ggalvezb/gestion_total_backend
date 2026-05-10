@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: abastecimiento_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: abastecimiento_total
+
+  api:
+    build: .
+    container_name: abastecimiento_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - .:/app
+    environment:
+      MONGODB_URL: mongodb://mongodb:27017
+      MONGODB_DB_NAME: abastecimiento_total
+      SECRET_KEY: cambia-esto-en-produccion
+      STORAGE_BACKEND: local
+      STORAGE_LOCAL_PATH: /app/uploads
+    depends_on:
+      - mongodb
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  mongo_data:
