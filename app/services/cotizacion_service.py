@@ -19,7 +19,7 @@ TRANSICIONES_VALIDAS = {
     EstadoCotizacion.aprobada:   {EstadoCotizacion.en_compra, EstadoCotizacion.rechazada},
     EstadoCotizacion.en_compra:  {EstadoCotizacion.comprada},
     EstadoCotizacion.comprada:   {EstadoCotizacion.despachado},
-    EstadoCotizacion.despachado: set(),
+    EstadoCotizacion.despachado: {EstadoCotizacion.comprada},
     EstadoCotizacion.rechazada:  {EstadoCotizacion.borrador},
     EstadoCotizacion.expirada:   {EstadoCotizacion.borrador},
 }

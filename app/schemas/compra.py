@@ -18,6 +18,7 @@ class ParcialCreate(BaseModel):
     precio_unit: float      # precio unitario pagado (c/IVA)
     fecha: Optional[datetime] = Field(default_factory=datetime.utcnow)
     notas: str = ""
+    estado: str = "comprado"
 
 
 class ParcialOut(ParcialCreate):
@@ -57,3 +58,4 @@ class ParcialUpdate(BaseModel):
     cantidad: Optional[int] = None
     precio_unit: Optional[float] = None
     notas: Optional[str] = None
+    estado: Optional[str] = None

@@ -69,7 +69,9 @@ async def _verificar_compra_completa(
     """Si todos los items están completos, cierra la compra y actualiza la cotización."""
     items = await db.compra_items.find({"compra_id": compra_id}).to_list(None)
     todos_completos = all(
-        i["cantidad_comprada"] >= i["cantidad_total"] for i in items
+        i["cantidad_comprada"] >= i["cantidad_total"] and
+        all(p.get("estado") == "recibido" for p in i.get("parciales", []))
+        for i in items
     )
 
     if todos_completos:
@@ -107,7 +109,8 @@ async def _sincronizar_item_y_compra(db: AsyncIOMotorDatabase, item_id: ObjectId
 
     all_items = await db.compra_items.find({"compra_id": compra_id}).to_list(None)
     todos_completos = all(
-        (nueva_cantidad if str(i["_id"]) == str(item_id) else i["cantidad_comprada"]) >= i["cantidad_total"]
+        (nueva_cantidad if str(i["_id"]) == str(item_id) else i["cantidad_comprada"]) >= i["cantidad_total"] and
+        all(p.get("estado") == "recibido" for p in i.get("parciales", []))
         for i in all_items
     )
 
@@ -173,6 +176,8 @@ async def actualizar_parcial(db: AsyncIOMotorDatabase, item_id: str, parcial_idx
         parc["precio_unit"] = data.precio_unit
     if data.notas is not None:
         update[f"parciales.{parcial_idx}.notas"] = data.notas
+    if data.estado is not None:
+        update[f"parciales.{parcial_idx}.estado"] = data.estado
     update[f"parciales.{parcial_idx}.total"] = round(parc["cantidad"] * parc["precio_unit"], 0)
 
     await db.compra_items.update_one({"_id": ObjectId(item_id)}, {"$set": update})
@@ -192,7 +197,10 @@ async def get_compra_con_items(db: AsyncIOMotorDatabase, cotizacion_id: str) -> 
 
     # Añadir campo calculado 'completo'
     for item in items:
-        item["completo"] = item["cantidad_comprada"] >= item["cantidad_total"]
+        item["completo"] = (
+            item["cantidad_comprada"] >= item["cantidad_total"] and
+            all(p.get("estado") == "recibido" for p in item.get("parciales", []))
+        )
         item["_id"] = str(item["_id"])
         item["compra_id"] = str(item["compra_id"])
         item["cotizacion_id"] = str(item["cotizacion_id"])
