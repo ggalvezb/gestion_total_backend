@@ -16,12 +16,11 @@ class TipoDocumento(str, Enum):
     factura_despacho = "factura_despacho"
 
 
-TIPOS_COMPRA = {TipoDocumento.factura_compra, TipoDocumento.boleta_compra}
+TIPOS_COMPRA = {TipoDocumento.factura_compra, TipoDocumento.boleta_compra, TipoDocumento.factura_despacho}
 TIPOS_VENTA = {
     TipoDocumento.orden_de_compra,
     TipoDocumento.guia_despacho,
     TipoDocumento.factura_venta,
-    TipoDocumento.factura_despacho,
 }
 
 

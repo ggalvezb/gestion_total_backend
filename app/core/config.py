@@ -18,7 +18,8 @@ class Settings(BaseSettings):
     s3_bucket_name: str = "abastecimiento"
 
     class Config:
-        env_file = ".env"
+        env_file = (".env", ".env.local")
+        env_file_encoding = "utf-8"
 
 
 @lru_cache()
