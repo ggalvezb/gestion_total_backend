@@ -7,7 +7,7 @@ from pathlib import Path
 
 from app.core.database import connect_db, close_db
 from app.core.config import get_settings
-from app.routers import auth, cotizaciones, compras, documentos, costos_fijos, usuarios
+from app.routers import auth, cotizaciones, compras, documentos, costos_fijos, usuarios, proveedores
 
 settings = get_settings()
 
@@ -46,6 +46,7 @@ app.include_router(compras.router,       prefix="/api")
 app.include_router(documentos.router,    prefix="/api")
 app.include_router(costos_fijos.router,  prefix="/api")
 app.include_router(usuarios.router,      prefix="/api")
+app.include_router(proveedores.router,   prefix="/api")
 
 # Servir archivos estáticos (uploads locales)
 uploads_path = Path(settings.storage_local_path)

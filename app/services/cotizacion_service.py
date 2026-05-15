@@ -15,13 +15,14 @@ IVA_FACTOR = 1.19
 # Transiciones de estado permitidas
 TRANSICIONES_VALIDAS = {
     EstadoCotizacion.borrador:   {EstadoCotizacion.enviada, EstadoCotizacion.rechazada},
-    EstadoCotizacion.enviada:    {EstadoCotizacion.aprobada, EstadoCotizacion.rechazada, EstadoCotizacion.expirada},
+    EstadoCotizacion.enviada:    {EstadoCotizacion.aprobada, EstadoCotizacion.rechazada, EstadoCotizacion.expirada, EstadoCotizacion.desierta},
     EstadoCotizacion.aprobada:   {EstadoCotizacion.en_compra, EstadoCotizacion.rechazada},
     EstadoCotizacion.en_compra:  {EstadoCotizacion.comprada},
     EstadoCotizacion.comprada:   {EstadoCotizacion.despachado},
     EstadoCotizacion.despachado: {EstadoCotizacion.comprada},
     EstadoCotizacion.rechazada:  {EstadoCotizacion.borrador},
     EstadoCotizacion.expirada:   {EstadoCotizacion.borrador},
+    EstadoCotizacion.desierta:   {EstadoCotizacion.borrador},
 }
 
 

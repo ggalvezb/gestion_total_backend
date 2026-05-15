@@ -14,6 +14,7 @@ class EstadoCotizacion(str, Enum):
     despachado = "despachado"
     rechazada = "rechazada"
     expirada = "expirada"
+    desierta = "desierta"
 
 
 # ── Sub-modelos embebidos ──────────────────────────────────
